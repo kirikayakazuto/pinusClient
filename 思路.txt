@@ -1,0 +1,5 @@
+areaHandler 思路
+玩家怎么从connector服务器进入area服务器
+
+现在的方案一:
+    
