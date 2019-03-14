@@ -25,7 +25,53 @@ export default class NewClass extends cc.Component {
     }
 
     start () {
-        this.showSelfInfo();
+        this.addEventListen();
+    }
+    /**
+     * 添加事件监听
+     */
+    addEventListen() {
+        /**
+         * 自己进入房间
+         */
+        pinusUtil.on("onUserEnterRoom", (data: {playerInfo: UserInfo}) => {
+            if(data.playerInfo.openId == GameInfo.userInfo.openId) {
+                this.showSelfInfo();
+            }else {
+                this.showOtherInfo(data.playerInfo);
+            }
+        });
+        /**
+         * 玩家退出房间,  
+         */
+        pinusUtil.on("onPlayerQuitRoom", (data) => {
+            console.log(data);
+            if(data.playerOpenId == GameInfo.userInfo.openId) {
+                this.hideIsSelfInfo(true);
+            }else {
+                this.hideIsSelfInfo(false);
+            }
+        });
+        /**
+         * 其他玩家进入
+         */
+        pinusUtil.on("onPlayerEnterRoom", (data: any) => {
+            this.showOtherInfo(data);
+        });
+
+        pinusUtil.on("onGameCanStart", (data: any) => {
+            this.showTitle("已经成功匹配对手!");
+            this.button.getComponent(cc.Button).interactable = false;
+            this.scheduleOnce(() => {
+                cc.director.loadScene("game_scene");
+            }, 2);
+        });
+    }
+    /**
+     * 显示进场动画, 准备开始游戏
+     */
+    showCanStartGame() {
+
     }
     /**
      * 显示自己的信息
@@ -59,6 +105,21 @@ export default class NewClass extends cc.Component {
             this.otherHead.getChildByName("img").getComponent(cc.Sprite).spriteFrame = sprite;
         });
     }
+    /**
+     * 隐藏自己的信息
+     */
+    hideIsSelfInfo(who: Boolean) {
+        let node: cc.Node = null;
+        if(who) {
+            node = this.selfHead;
+        }else {
+            node = this.otherHead;
+        }
+        node.getChildByName("nickName").getComponent(cc.Label).string = "";
+        node.getChildByName("gender").getComponent(cc.Label).string = "";
+        node.getChildByName("img").getComponent(cc.Sprite).spriteFrame = null;
+    }
+    
 
     startOrStopFlag = false;       // 防止多次点击
     startOrStopState = false;      // false表示未开始匹配
@@ -69,12 +130,12 @@ export default class NewClass extends cc.Component {
         this.startOrStopFlag = true;
         let route = "";
         if(this.startOrStopState) {
-            route = "connector.entryHandler.removeMatchOnlinePlayer";
+            route = "chat.chatHandler.removeMatchOnlinePlayer";
         }else {
-            route = "connector.entryHandler.addMatchOnlinePlayer";
+            route = "chat.chatHandler.addMatchOnlinePlayer";
         }
         // 发送信息到服务器, 取消或开始排队
-        pinusUtil.request(route, {roomType: 1}, (data) => {
+        pinusUtil.request(route, {rid: 1, roomType: 1}, (data) => {
             if(data.code != RES.OK) {
                 console.log("err: ", data);
                 return ;

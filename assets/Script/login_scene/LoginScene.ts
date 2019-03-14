@@ -35,7 +35,7 @@ export default class NewClass extends cc.Component {
                         // result中包含encryptedData和iv
                         let encryptedData = result.encryptedData;
                         let iv = result.iv;
-                        // 将res.code、result.encryptedData、result.iv发送到服务器
+                        // 将res.code, result.encryptedData, result.iv发送到服务器
                         self.enterTheGame(code, encryptedData, iv);
                     },
                     fail: function(result) {
@@ -77,30 +77,41 @@ export default class NewClass extends cc.Component {
     /**
      * 测试用
      */
-    quikLoginGame() {
-
-        GameInfo.userInfo = {
-            openId: "oKH7c4g30VXZxQ5CV3iRQo-QjNo8", 
-            nickName: "kirigayakazuto",
-            avatarUrl: "https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaELED8YcLTuBpUC279icN0vO8UWSUN7VrYyhPFBzibCWhwOicB7ym5NJaoLZq64KYTyRsF0CVT1zTJVoQ/132",
-            gender: 1,
-            chip: 1000,
-            exp: 0,
-            city: "Jiujiang",
-            country: "China",
-            province: "Jiangxi"
-        };
+    quikLoginGame(e, data) {
+        if(data == 'kiri') {
+            GameInfo.userInfo = {
+                openId: "oKH7c4g30VXZxQ5CV3iRQo-QjNo8",
+                nickName: "kirigayakazuto",
+                avatarUrl: "https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaELED8YcLTuBpUC279icN0vO8UWSUN7VrYyhPFBzibCWhwOicB7ym5NJaoLZq64KYTyRsF0CVT1zTJVoQ/132",
+                gender: 1,
+                chip: 1000,
+                exp: 0,
+                city: "Jiujiang",
+                country: "China",
+                province: "Jiangxi"
+            };
+        }else {
+            GameInfo.userInfo = {
+                openId: "oKH7c4g30VXZxQ5CV3iRQo-QjNo9", 
+                nickName: "denglang",
+                avatarUrl: "https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaELED8YcLTuBpUC279icN0vO8UWSUN7VrYyhPFBzibCWhwOicB7ym5NJaoLZq64KYTyRsF0CVT1zTJVoQ/132",
+                gender: 1,
+                chip: 1000,
+                exp: 10,
+                city: "Jiujiang",
+                country: "China",
+                province: "Jiangxi"
+            };
+        }
+        
 
         let route = "connector.entryHandler.enter";
-        pinusUtil.init("127.0.0.1", "3050", true, route, {openId: GameInfo.userInfo.openId}, (data: any) => {
+        pinusUtil.init("127.0.0.1", 3050, true, route, {openId: GameInfo.userInfo.openId}, (data: any) => {
             if(data && data.code == 1) {
                 console.log("登录成功!");
                 cc.director.loadScene("home_scene");
             }
-        });
-
-        
-        
+        });        
     }
     /**
      * 获取用户授权

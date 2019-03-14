@@ -2,6 +2,13 @@ export default class GameInfo {
 
     static isConnectServer = false;
 
+    static serverConfig = {
+        chat: {
+            host: "127.0.0.1",
+            port: 6050,
+        }
+    }
+
     static userInfo = {
         openId: "",
         nickName: "",
