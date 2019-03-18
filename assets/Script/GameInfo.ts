@@ -20,4 +20,12 @@ export default class GameInfo {
         country: "",
         province: "",
     }
+
+    static areaId = -1;            // 区间id
+    static roomId = "";            // 房间Id
+
+    static playerEnterRoom(areaId: number, roomId: string) {
+        this.areaId = areaId;
+        this.roomId = roomId;
+    }
 }

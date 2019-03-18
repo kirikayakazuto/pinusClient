@@ -27,18 +27,18 @@ export default class NewClass extends cc.Component {
 
     turn_to_direction(data) {
         data = parseInt(data);
-        // this.GameScene.turn_to_direction(data);
+        this.GameScene.sendPlayerMove(data);
     }
 
     add_touch_listen() {
+
         this.moveButton.getChildByName("left").on(cc.Node.EventType.TOUCH_START, () => {
-            
             this.turn_to_direction(-1);
             this.moveButton.getChildByName("left").scale += this.scaleNum;
             
         }, this);
-        this.moveButton.getChildByName("right").on(cc.Node.EventType.TOUCH_START, () => {
-            
+
+        this.moveButton.getChildByName("right").on(cc.Node.EventType.TOUCH_START, () => {    
             this.turn_to_direction(1);
             this.moveButton.getChildByName("right").scale += this.scaleNum;
         }, this);
@@ -46,13 +46,12 @@ export default class NewClass extends cc.Component {
 
         this.moveButton.getChildByName("left").on(cc.Node.EventType.TOUCH_END, () => {
             this.turn_to_direction(0);
-            this.moveButton.getChildByName("left").scale -= this.scaleNum;
-            
+            this.moveButton.getChildByName("left").scale -= this.scaleNum;    
         }, this);
+
         this.moveButton.getChildByName("right").on(cc.Node.EventType.TOUCH_END, () => {
             this.turn_to_direction(0);
-            this.moveButton.getChildByName("right").scale -= this.scaleNum;
-            
+            this.moveButton.getChildByName("right").scale -= this.scaleNum;    
         }, this);
        
         
@@ -60,12 +59,10 @@ export default class NewClass extends cc.Component {
         this.moveButton.getChildByName("left").on(cc.Node.EventType.TOUCH_CANCEL, () => {
             this.turn_to_direction(0);
             this.moveButton.getChildByName("left").scale -= this.scaleNum;
-            
         }, this);
         this.moveButton.getChildByName("right").on(cc.Node.EventType.TOUCH_CANCEL, () => {
             this.turn_to_direction(0);
             this.moveButton.getChildByName("right").scale -= this.scaleNum;
-            
         }, this);
         
     }
