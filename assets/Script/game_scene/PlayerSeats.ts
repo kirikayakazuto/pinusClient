@@ -39,7 +39,7 @@ export default class NewClass extends cc.Component {
      * @param data 
      */
     movePlayer(seatId: number, data: {turn: number, speed: number}) {
-        this.playerList[seatId].setMoving(data.turn, data.speed);
+        this.playerList[seatId].setDirection(data.turn, data.speed);
     }
 
     frameUpdate(dt: number) {

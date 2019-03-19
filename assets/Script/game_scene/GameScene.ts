@@ -2,7 +2,6 @@ import pinusUtil from "../common/pinusUtil";
 import RES from "../RES";
 import CtlButton from "./CtlButton"
 import playerSeats from "./PlayerSeats"
-import Action from "../common/Action";
 import { UserInfo } from "../GameInterface";
 
 const {ccclass, property} = cc._decorator;
@@ -19,6 +18,8 @@ export default class NewClass extends cc.Component {
 
     onLoad () {
         this.addServerListen();
+        cc.director.getCollisionManager().enabled = true;
+        cc.director.getCollisionManager().enabledDebugDraw = true;
     }
 
     start () {
