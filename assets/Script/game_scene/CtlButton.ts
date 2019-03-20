@@ -1,7 +1,8 @@
 import GameScene from "./GameScene"
 import pinusUtil from "../common/pinusUtil";
-import RES, { Cmd } from "../RES";
+import RES, { Cmd, ArmsStatus } from "../RES";
 import Action from "../common/Action";
+import PlayerSeats from "./PlayerSeats"
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -11,6 +12,9 @@ export default class NewClass extends cc.Component {
     moveButton: cc.Node = null;
     @property(cc.Node)
     shootButton: cc.Node = null;
+
+    @property(PlayerSeats)
+    playerSeats: PlayerSeats = null;
 
     scaleNum = 0.2;
     // LIFE-CYCLE CALLBACKS:
@@ -53,20 +57,46 @@ export default class NewClass extends cc.Component {
     }
 
     arrowButtonFlag = false;
-    isStop = false;
     sendArrowRitationSwitch() {
         if(this.arrowButtonFlag) {
             return ;
         }
         this.arrowButtonFlag = true;
 
-        this.isStop = !this.isStop;
-        this.action.setCmdAndData(Cmd.ArrowRitationSwitch, {isStop: this.isStop});
+        let isStop = this.playerSeats.getSelfPlayer().getArrorRotationIsRun();
+        isStop = !isStop;
+        this.action.setCmdAndData(Cmd.ArrowRitationSwitch, {isStop: isStop});
         
         this.sendFrameData(this.action);
 
         this.scheduleOnce(() => {
             this.arrowButtonFlag = false;
+        }, 1);
+    }
+
+    switchArmsFlag = false;
+    sendSwitchArmsClick() {
+        if(this.switchArmsFlag) {
+            return ;
+        }
+        let data: any = {};
+        if(this.playerSeats.getSelfPlayer().armsStatus == ArmsStatus.OnHand) {
+            data.armsStatus = ArmsStatus.Runing;
+            data.playerPos = this.playerSeats.getSelfPlayer().node.position;
+            data.shootSpeed = this.playerSeats.getSelfPlayer().getArrowRotation();
+            data.turnFace = this.playerSeats.getSelfPlayer().turnFace;
+
+        }else if(this.playerSeats.getSelfPlayer().armsStatus == ArmsStatus.onGround) {
+            data.armsStatus = ArmsStatus.Recycling;
+        }
+        
+
+
+        this.action.setCmdAndData(Cmd.switchArmsStatus, data)
+        this.sendFrameData(this.action);
+
+        this.scheduleOnce(() => {
+            this.switchArmsFlag = false;
         }, 1);
     }
 

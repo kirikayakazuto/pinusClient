@@ -1,7 +1,7 @@
 import PlayerCtl from "./PlayerCtl"
 import GameInfo from "../GameInfo";
 import Action from "../common/Action";
-import { Cmd } from "../RES";
+import { Cmd, ArmsStatus } from "../RES";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -20,6 +20,10 @@ export default class NewClass extends cc.Component {
 
     start () {
 
+    }
+
+    getSelfPlayer() {
+        return this.playerList[this.selfSeatId];
     }
     
     /**
@@ -42,7 +46,6 @@ export default class NewClass extends cc.Component {
      * 处理帧数据
      */
     dealWithFrameData(action: Action) {
-        console.log(action);
         switch (action.cmd) {
             case Cmd.Move:
                this.movePlayer(action.seatId, action.data);    
@@ -50,6 +53,10 @@ export default class NewClass extends cc.Component {
         
             case Cmd.ArrowRitationSwitch:
                 this.switchArrowRitation(action.seatId, action.data);
+            break;
+            
+            case Cmd.switchArmsStatus:
+                this.switchArmsStatus(action.seatId, action.data);
             break;
         }
 
@@ -67,14 +74,27 @@ export default class NewClass extends cc.Component {
      * 切换旋转
      */
     switchArrowRitation(seatId: number, data: {isStop?: boolean}) {
-        this.playerList[seatId].switchArrowRotation(data.isStop);
+        this.playerList[seatId].setSwitchArrowRotation(data.isStop);
     }
+
+    switchArmsStatus(seatId: number, data: any) {
+        if(data.armsStatus == ArmsStatus.Runing) {
+            this.playerList[seatId].thowArms(data.playerPos, data.shootSpeed, data.turnFace);
+        }else if(data.armsStatus == ArmsStatus.Recycling) {
+            this.playerList[seatId].recoveryArms();
+        }
+        
+    }
+
+
 
     frameUpdate(dt: number) {
         for(let i=0; i<this.playerList.length; i++) {
             this.playerList[i].frameUpdate(dt);
         }        
     }
+
+    
 
     // update (dt) {}
 }

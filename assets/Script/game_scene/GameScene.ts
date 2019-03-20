@@ -19,7 +19,7 @@ export default class NewClass extends cc.Component {
     onLoad () {
         this.addServerListen();
         cc.director.getCollisionManager().enabled = true;
-        cc.director.getCollisionManager().enabledDebugDraw = true;
+        // cc.director.getCollisionManager().enabledDebugDraw = true;
     }
 
     start () {

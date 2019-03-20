@@ -1,4 +1,5 @@
 import SpriteCtl from "./SpriteCtl"
+import { ArmsStatus } from "../RES";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -13,10 +14,13 @@ export default class NewClass extends cc.Component {
     seatId = -1;        // 座位号
     direction = 0;         // 0表示没有移动 -1表示正在向左移动, 1表示右
     jumping = false;        // 0表示没有跳起, 1表示正在空中
+    turnFace = 1;
     
 
     @property(cc.Node)
     selfFlag: cc.Node = null;
+    @property(cc.Node)
+    runArms: cc.Node = null;
 
     @property(Number)
     maxSpeed = cc.v2(1000, 1000);
@@ -29,8 +33,7 @@ export default class NewClass extends cc.Component {
     @property(Number)
     speed = cc.v2(0, 0);          // 移动的速度
 
-    @property(Number)
-    arrowSpeed = 100;
+    armsSpeed = cc.v2(0, 0);
 
     /**
      * ------------------
@@ -41,6 +44,12 @@ export default class NewClass extends cc.Component {
 
     prePosition = cc.v2();
     preStep = cc.v2();
+
+
+    /**
+     * 攻击系统
+     */
+    armsStatus = ArmsStatus.OnHand; // 武器的状态   0表示武器在玩家手上, 1表示武器扔出去, 2表示武器在地上, 3表示武器收回来
     // onLoad () {}
 
     start () {
@@ -51,10 +60,13 @@ export default class NewClass extends cc.Component {
 
     }
     /**
-     * 
+     * -------------------------------------- 数据设置 -------------------------------
      */
-    switchArrowRotation(isStop: boolean) {
+    setSwitchArrowRotation(isStop: boolean) {
         this.SpriteCtl.switchArrowRotation(isStop);
+    }
+    getArrorRotationIsRun() {
+        return this.SpriteCtl.arrowRotationFlag;
     }
 
     showSelfFlag() {
@@ -63,14 +75,16 @@ export default class NewClass extends cc.Component {
     }
 
     /**
-     * ------------------------------------------------- 玩家移动 ----------------------------------------
+     * ------------------------------------------------- 玩家移动 扔出斧头----------------------------------------
      * @param direction
      * @param speed 
      */
     setDirection(direction: number, speed: number) {
         this.direction = direction;
-        this.node.scaleX = direction ? direction : this.node.scaleX;
-        // this.speed = speed;
+        if(this.direction) {
+            this.turnFace = this.direction;
+            this.node.scaleX = this.turnFace;
+        }
     }
     
     setJumping() {
@@ -80,6 +94,40 @@ export default class NewClass extends cc.Component {
         this.jumping = true;
         this.speed.y = this.jumpSpeed;
     }
+
+
+    thowArms(curPos: cc.Vec2, speed: cc.Vec2, turnFace: number) {
+        if(this.armsStatus != ArmsStatus.OnHand) {
+            return ;
+        }
+        this.armsStatus = ArmsStatus.Runing;
+        this.SpriteCtl.hideArmSp();
+
+        this.runArms.active = true;
+        this.runArms.x = curPos.x;
+        this.runArms.y = curPos.y + 20;
+
+        speed.x *= turnFace;
+
+        speed.x *= 500;
+        speed.y *= 500;
+        this.armsSpeed = speed;
+        console.log(this.armsSpeed);
+    }
+
+    recoveryArms() {
+        if(this.armsStatus != ArmsStatus.onGround) {
+            return ;
+        }
+    }
+    /**
+     * ------------------ 控制spriteCtl的方法 -----------------------
+     */
+    getArrowRotation() {
+        return this.SpriteCtl.getArrowRotation();
+    }
+
+
     /**
      * -----------------------------------------------------   碰撞回调   ---------------------------------------------------------
      */
@@ -168,6 +216,7 @@ export default class NewClass extends cc.Component {
     frameUpdate(dt: number) {
         this.updataMove(dt);
         this.updateArrowRotation(dt);
+        this.updateArmsPosition(dt);
     }
 
     updataMove(dt: number) {
@@ -224,6 +273,16 @@ export default class NewClass extends cc.Component {
      */
     updateArrowRotation(dt: number) {
         this.SpriteCtl.updateArrowRotation(dt);
+    }
+
+    /**
+     * 运动斧头
+     */
+    updateArmsPosition(dt: number) {
+        if(this.armsStatus == ArmsStatus.Runing || this.armsStatus == ArmsStatus.Recycling) {
+            this.runArms.x += this.armsSpeed.x * dt;
+            this.runArms.y += this.armsSpeed.y * dt;
+        }
     }
 
     // update (dt) {}

@@ -19,6 +19,14 @@ export default class RES {
 
 export enum Cmd {
     Move = 1,
-    ArrowRitationSwitch = 2
+    ArrowRitationSwitch = 2,
+    switchArmsStatus = 3,
 
+}
+
+export enum ArmsStatus {
+    OnHand = 0,
+    Runing = 1,
+    onGround = 2,
+    Recycling = 3,
 }

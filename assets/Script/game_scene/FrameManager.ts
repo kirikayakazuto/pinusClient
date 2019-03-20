@@ -30,19 +30,20 @@ export default class NewClass extends cc.Component {
      * 开始接收帧数据
      */
     run() {
-        this.isRunning = true;
+        
         pinusUtil.on("onFrameEvent", (data: FrameData) => {
             this.receivedFrameData(data);
         });
     }
     stop() {
-        this.isRunning = false;
+        
     }
     /**
      * 收到命令
      * @param data 
      */
     receivedFrameData(data: FrameData) {
+        
         this.curFrameCount = data.curFrame;
         this.receiveFrameData.push(data);
     }
@@ -62,16 +63,18 @@ export default class NewClass extends cc.Component {
             if(ms > this.restRunningSecond) {
                 ms = this.restRunningSecond;
             }
-            
-            for(let action of this.runningFrameData.actionList) {
-                this.playerSeats.dealWithFrameData(action);
-                
+            if(this.isRunning != true) {
+                this.isRunning = true;
+                for(let action of this.runningFrameData.actionList) {
+                    this.playerSeats.dealWithFrameData(action);   
+                }
             }
 
             this.playerSeats.frameUpdate(ms);
-
+            
             this.restRunningSecond -= ms;
             if(this.restRunningSecond <= 0) {
+                this.isRunning = false;
                 this.runningFrameData = null;
                 this.receiveFrameData.shift();
             }
