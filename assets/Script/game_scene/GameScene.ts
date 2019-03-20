@@ -27,18 +27,6 @@ export default class NewClass extends cc.Component {
         // 场景加载完毕后, 想服务器发送通知表示游戏可以开始了
         this.sendGameCanStart();
     }
-
-    sendPlayerMove(direction: number) {
-        let route = "chat.chatHandler.playerMove";
-        pinusUtil.request(route, {type: "move", data: {
-            turn: direction,
-            speed: 100,
-        }}, (data) => {
-            if(data.code != RES.OK) {
-                console.log("err: ", data);
-            }
-        });
-    }
     /**
      * 发送消息, 游戏可以开始了
      */

@@ -16,3 +16,9 @@ export default class RES {
     static ERR_IS_IN_MASTH_LIST = 209;
     static ERR_NOT_IN_MASTH_LIST = 210;
 }
+
+export enum Cmd {
+    Move = 1,
+    ArrowRitationSwitch = 2
+
+}

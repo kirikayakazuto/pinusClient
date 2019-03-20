@@ -2,6 +2,7 @@ import pinusUtil from "../common/pinusUtil";
 import Action from "../common/Action";
 import FrameData from "../common/FrameData";
 import playerSeats from "./PlayerSeats"
+import { Cmd } from "../RES";
 
 const {ccclass, property} = cc._decorator;
 
@@ -61,9 +62,10 @@ export default class NewClass extends cc.Component {
             if(ms > this.restRunningSecond) {
                 ms = this.restRunningSecond;
             }
-
-            for(let cmd of this.runningFrameData.actionList) {
-                this.playerSeats.movePlayer(cmd.seatId, cmd.data);
+            
+            for(let action of this.runningFrameData.actionList) {
+                this.playerSeats.dealWithFrameData(action);
+                
             }
 
             this.playerSeats.frameUpdate(ms);

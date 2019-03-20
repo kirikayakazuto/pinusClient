@@ -29,6 +29,9 @@ export default class NewClass extends cc.Component {
     @property(Number)
     speed = cc.v2(0, 0);          // 移动的速度
 
+    @property(Number)
+    arrowSpeed = 100;
+
     /**
      * ------------------
      */
@@ -47,20 +50,29 @@ export default class NewClass extends cc.Component {
     init() {
 
     }
+    /**
+     * 
+     */
+    switchArrowRotation(isStop: boolean) {
+        this.SpriteCtl.switchArrowRotation(isStop);
+    }
 
     showSelfFlag() {
         this.isSelf = true;
         this.selfFlag.active = true;
     }
+
     /**
-     * 左右移动
+     * ------------------------------------------------- 玩家移动 ----------------------------------------
+     * @param direction
+     * @param speed 
      */
     setDirection(direction: number, speed: number) {
         this.direction = direction;
         this.node.scaleX = direction ? direction : this.node.scaleX;
         // this.speed = speed;
     }
-
+    
     setJumping() {
         if(!this.jumping) {
             return ;
@@ -69,7 +81,7 @@ export default class NewClass extends cc.Component {
         this.speed.y = this.jumpSpeed;
     }
     /**
-     * ---------------------   碰撞回调   -------------------
+     * -----------------------------------------------------   碰撞回调   ---------------------------------------------------------
      */
     onCollisionEnter(other: cc.BoxCollider, self: cc.BoxCollider) {
         this.touchingNumber ++;
@@ -149,8 +161,16 @@ export default class NewClass extends cc.Component {
         }
     }
 
+    /**
+     * --------------------------------------------------------------- 帧事件更新 -------------------------------------------------------------------
+     * @param dt 
+     */
+    frameUpdate(dt: number) {
+        this.updataMove(dt);
+        this.updateArrowRotation(dt);
+    }
+
     updataMove(dt: number) {
-        
         // this.node.x += dt * this.direction * 100;
         if (this.collisionY === 0) {
             this.speed.y += this.gravity * dt;
@@ -199,8 +219,11 @@ export default class NewClass extends cc.Component {
         }
     }
 
-    frameUpdate(dt: number) {
-        this.updataMove(dt);
+    /**
+     * 更新箭头的旋转角度
+     */
+    updateArrowRotation(dt: number) {
+        this.SpriteCtl.updateArrowRotation(dt);
     }
 
     // update (dt) {}
