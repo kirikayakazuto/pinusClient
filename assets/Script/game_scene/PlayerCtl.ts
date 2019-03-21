@@ -104,6 +104,7 @@ export default class NewClass extends cc.Component {
         this.SpriteCtl.hideArmSp();
 
         this.runArms.active = true;
+        this.runArms.getComponent("frame_anim").play_loop();
         this.runArms.x = curPos.x;
         this.runArms.y = curPos.y + 20;
 
@@ -112,7 +113,6 @@ export default class NewClass extends cc.Component {
         speed.x *= 500;
         speed.y *= 500;
         this.armsSpeed = speed;
-        console.log(this.armsSpeed);
     }
 
     recoveryArms() {
@@ -135,26 +135,20 @@ export default class NewClass extends cc.Component {
         this.touchingNumber ++;
         
         let otherAabb = other["world"].aabb;
-        let otherPreAabb = other["world"].preAabb.clone();
+        let otherPreAabb = other["world"].preAabb.clone();  // 上一帧的包围盒
 
         let selfAabb = self["world"].aabb;
-        let selfPreAabb = self["world"].preAabb.clone();
-
-        // console.log(otherAabb, selfAabb);
+        let selfPreAabb = self["world"].preAabb.clone();    // 上一帧的包围盒, 因为碰撞会导致两个包围盒层叠
 
         selfPreAabb.x = selfAabb.x;
         otherPreAabb.x = otherAabb.x;
 
         if (cc.Intersection.rectRect(selfPreAabb, otherPreAabb)) {
             if (this.speed.x < 0 && (selfPreAabb.xMax > otherPreAabb.xMax)) {
-                
                 this.node.x = this.node.parent.convertToNodeSpaceAR(cc.v2(otherPreAabb.xMax+selfPreAabb.width/2, 0)).x;
                 this.collisionX = -1;
-                // console.log(otherPreAabb.xMax);
-                // console.log(this.node.x);
             }
             else if (this.speed.x > 0 && (selfPreAabb.xMin < otherPreAabb.xMin)) {
-                // this.node.x = otherPreAabb.xMin - selfPreAabb.width;
                 this.node.x = this.node.parent.convertToNodeSpaceAR(cc.v2(otherPreAabb.xMin-selfPreAabb.width/2, 0)).x;
                 this.collisionX = 1;
             }
