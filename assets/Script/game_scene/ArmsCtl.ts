@@ -16,6 +16,9 @@ export default class NewClass extends cc.Component {
     @property([cc.SpriteFrame])
     armsOnGround: Array<cc.SpriteFrame> = [];
 
+    @property(String)
+    selfGounp = "";
+
     /**
      * ------------------
      */
@@ -34,9 +37,14 @@ export default class NewClass extends cc.Component {
 
     canCollision = false;       // 是否开始碰撞
 
+
+
     playerCtl: PlayerCtl = null;
     posCha = -25;
+
+
     recoverySpeed = 800;
+    thowSpeed = 500;
 
     onLoad () {
         this.armsFrameAnim = this.node.getComponent(frame_anim);
@@ -56,20 +64,19 @@ export default class NewClass extends cc.Component {
     setArmsStatus(status: ArmsStatus, whichOne?: number) {
         this.armsStatus = status;
         this.armsFrameAnim.no_play_anim();      // 停止播放动画
-
+        this.canCollision = status == ArmsStatus.Runing ? true : false;
+        this.node.group = this.selfGounp;
         if(this.armsStatus == ArmsStatus.OnHand) {
             this.node.getComponent(cc.Sprite).spriteFrame = this.armsOnHand[whichOne];
-            this.canCollision = false;
             return ;
         }
         if(this.armsStatus == ArmsStatus.onGround){
             this.node.getComponent(cc.Sprite).spriteFrame = this.armsOnGround[whichOne];
-            this.canCollision = true;
+            this.node.group = "jumpGround";
             return ;
         }
         // 飞行中
         this.armsFrameAnim.play_loop();
-        this.canCollision = true;
         return ;
     }
 
@@ -90,8 +97,8 @@ export default class NewClass extends cc.Component {
 
         speed.x *= turnFace;
 
-        speed.x *= 500;
-        speed.y *= 500;
+        speed.x *= this.thowSpeed;
+        speed.y *= this.thowSpeed;
         this.armsSpeed = speed;
     }
     /**
@@ -152,12 +159,12 @@ export default class NewClass extends cc.Component {
 
         if (cc.Intersection.rectRect(selfPreAabb, otherPreAabb)) {
             if (this.armsSpeed.y < 0 && (selfPreAabb.yMax > otherPreAabb.yMax)) {
-                this.node.y = this.node.parent.convertToNodeSpaceAR(cc.v2(0, otherPreAabb.yMax)).y;
+                this.node.y = this.node.parent.convertToNodeSpaceAR(cc.v2(0, otherPreAabb.yMax - 17)).y;
                 this.collisionY = -1;
                 this.setArmsStatus(ArmsStatus.onGround, 1);
             }
             else if (this.armsSpeed.y > 0 && (selfPreAabb.yMin < otherPreAabb.yMin)) {
-                this.node.y = this.node.parent.convertToNodeSpaceAR(cc.v2(0, otherPreAabb.yMin - selfPreAabb.height)).y;
+                this.node.y = this.node.parent.convertToNodeSpaceAR(cc.v2(0, otherPreAabb.yMin - selfPreAabb.height - 17)).y;
                 this.collisionY = 1;
                 this.setArmsStatus(ArmsStatus.onGround, 2);
             }

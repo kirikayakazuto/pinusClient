@@ -12,8 +12,8 @@ export default class NewClass extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     arrowRotationDir = 1;       // 箭头旋转方向
-    arrowRotationSpeed = 10;
-    arrowRotationFlag = false;
+    arrowRotationSpeed = 50;       // 箭头旋转的速度
+    arrowRotationFlag = false;      // 是否开始旋转
 
 
     onLoad () {
@@ -73,9 +73,6 @@ export default class NewClass extends cc.Component {
      * 0 站着不动, 1走动, 2跳跃
      */
     playPlayerAnimByIndex(index: number) {
-        if(this.playerSpArray[2].is_playing && index == 1) {        // 玩家真正跳跃中, 那么不允许播放走动动画
-                return ;
-        }
         for(let i=0; i<this.playerSpArray.length; i++) {
             if(i == index) {
                 continue;

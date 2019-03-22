@@ -26,11 +26,11 @@ export default class NewClass extends cc.Component {
     @property(Number)
     maxSpeed = cc.v2(1000, 1000);
     @property(Number)
-    gravity = -1000;
+    gravity = -1500;
     @property(Number)
     drag = 1000;
     @property(Number)
-    jumpSpeed = 300;
+    jumpSpeed = 500;
     @property(Number)
     speed = cc.v2(0, 0);          // 移动的速度
 
@@ -86,7 +86,7 @@ export default class NewClass extends cc.Component {
     }
     
     setJumping() {
-        if(!this.jumping) {
+        if(this.jumping) {
             return ;
         }
         this.jumping = true;
@@ -121,6 +121,11 @@ export default class NewClass extends cc.Component {
      */
     onCollisionEnter(other: cc.BoxCollider, self: cc.BoxCollider) {
         this.touchingNumber ++;
+
+        if(other.node.groupIndex == 7) {
+            this.setJumping(); // 将信号发给服务器, 等待服务器的广播
+            return ;
+        }
         
         let otherAabb = other["world"].aabb;
         let otherPreAabb = other["world"].preAabb.clone();  // 上一帧的包围盒
@@ -155,8 +160,8 @@ export default class NewClass extends cc.Component {
             if (this.speed.y < 0 && (selfPreAabb.yMax > otherPreAabb.yMax)) {
                 // this.node.y = otherPreAabb.yMax - this.node.parent.y;
                 this.node.y = this.node.parent.convertToNodeSpaceAR(cc.v2(0, otherPreAabb.yMax)).y;
-                this.jumping = false;
                 this.collisionY = -1;
+                this.jumping = false;
             }
             else if (this.speed.y > 0 && (selfPreAabb.yMin < otherPreAabb.yMin)) {
                 // this.node.y = otherPreAabb.yMin - selfPreAabb.height - this.node.parent.y;
@@ -238,14 +243,16 @@ export default class NewClass extends cc.Component {
         
         this.node.x += this.speed.x * dt;
         this.node.y += this.speed.y * dt;
-        if(Math.abs(this.speed.x) > 0) {
-            this.SpriteCtl.playPlayerAnimByIndex(1);
-        }else {
-            this.SpriteCtl.playPlayerAnimByIndex(0);
-        }
+        
 
         if(this.jumping) {
             this.SpriteCtl.playPlayerAnimByIndex(2);
+        }else {
+            if(Math.abs(this.speed.x) > 0) {
+                this.SpriteCtl.playPlayerAnimByIndex(1);
+            }else {
+                this.SpriteCtl.playPlayerAnimByIndex(0);
+            }
         }
     }
 

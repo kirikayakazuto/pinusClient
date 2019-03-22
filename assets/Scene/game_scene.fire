@@ -2048,7 +2048,7 @@
     "_size": {
       "__type__": "cc.Size",
       "width": 30,
-      "height": 45
+      "height": 30
     }
   },
   {
@@ -2074,7 +2074,8 @@
       {
         "__uuid__": "3d2a3ebe-8f49-4458-9310-67cbfbe366f4"
       }
-    ]
+    ],
+    "selfGounp": "armsA"
   },
   {
     "__type__": "1151fScGmNM9aEd7EainGfZ",
@@ -2624,7 +2625,8 @@
       {
         "__uuid__": "3d2a3ebe-8f49-4458-9310-67cbfbe366f4"
       }
-    ]
+    ],
+    "selfGounp": "armsB"
   },
   {
     "__type__": "cc.Node",
@@ -2685,7 +2687,7 @@
     "_localZOrder": 0,
     "_globalZOrder": 0,
     "_opacityModifyRGB": false,
-    "groupIndex": 4
+    "groupIndex": 5
   },
   {
     "__type__": "cc.Sprite",
