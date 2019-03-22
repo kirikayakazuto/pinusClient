@@ -1,5 +1,6 @@
 import SpriteCtl from "./SpriteCtl"
 import { ArmsStatus } from "../RES";
+import ArmsCtl from "./ArmsCtl"
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -19,8 +20,8 @@ export default class NewClass extends cc.Component {
 
     @property(cc.Node)
     selfFlag: cc.Node = null;
-    @property(cc.Node)
-    runArms: cc.Node = null;
+    @property(ArmsCtl)
+    armsCtl: ArmsCtl = null;
 
     @property(Number)
     maxSpeed = cc.v2(1000, 1000);
@@ -46,14 +47,11 @@ export default class NewClass extends cc.Component {
     preStep = cc.v2();
 
 
-    /**
-     * 攻击系统
-     */
-    armsStatus = ArmsStatus.OnHand; // 武器的状态   0表示武器在玩家手上, 1表示武器扔出去, 2表示武器在地上, 3表示武器收回来
+    
     // onLoad () {}
 
     start () {
-
+        this.armsCtl.init(this);
     }
 
     init() {
@@ -75,7 +73,7 @@ export default class NewClass extends cc.Component {
     }
 
     /**
-     * ------------------------------------------------- 玩家移动 扔出斧头----------------------------------------
+     * ------------------------------------------------- 玩家移动----------------------------------------
      * @param direction
      * @param speed 
      */
@@ -95,30 +93,20 @@ export default class NewClass extends cc.Component {
         this.speed.y = this.jumpSpeed;
     }
 
+    /**
+     * ----------------------------------------- 操作斧头 ----------------------------------
+     */
 
     thowArms(curPos: cc.Vec2, speed: cc.Vec2, turnFace: number) {
-        if(this.armsStatus != ArmsStatus.OnHand) {
-            return ;
-        }
-        this.armsStatus = ArmsStatus.Runing;
-        this.SpriteCtl.hideArmSp();
-
-        this.runArms.active = true;
-        this.runArms.getComponent("frame_anim").play_loop();
-        this.runArms.x = curPos.x;
-        this.runArms.y = curPos.y + 20;
-
-        speed.x *= turnFace;
-
-        speed.x *= 500;
-        speed.y *= 500;
-        this.armsSpeed = speed;
+        this.armsCtl.thowArms(curPos, speed, turnFace);
     }
 
     recoveryArms() {
-        if(this.armsStatus != ArmsStatus.onGround) {
-            return ;
-        }
+        this.armsCtl.recoveryArms();
+    }
+
+    getArmsStatus() {
+        return this.armsCtl.armsStatus;
     }
     /**
      * ------------------ 控制spriteCtl的方法 -----------------------
@@ -127,7 +115,7 @@ export default class NewClass extends cc.Component {
         return this.SpriteCtl.getArrowRotation();
     }
 
-
+    
     /**
      * -----------------------------------------------------   碰撞回调   ---------------------------------------------------------
      */
@@ -211,17 +199,16 @@ export default class NewClass extends cc.Component {
         this.updataMove(dt);
         this.updateArrowRotation(dt);
         this.updateArmsPosition(dt);
+        this.updateRecoveryArms(dt);
     }
 
     updataMove(dt: number) {
-        // this.node.x += dt * this.direction * 100;
         if (this.collisionY === 0) {
             this.speed.y += this.gravity * dt;
             if (Math.abs(this.speed.y) > this.maxSpeed.y) {
                 this.speed.y = this.speed.y > 0 ? this.maxSpeed.y : -this.maxSpeed.y;
             }
         }
-
         if (this.direction === 0) {
             if (this.speed.x > 0) {
                 this.speed.x -= this.drag * dt;
@@ -273,10 +260,11 @@ export default class NewClass extends cc.Component {
      * 运动斧头
      */
     updateArmsPosition(dt: number) {
-        if(this.armsStatus == ArmsStatus.Runing || this.armsStatus == ArmsStatus.Recycling) {
-            this.runArms.x += this.armsSpeed.x * dt;
-            this.runArms.y += this.armsSpeed.y * dt;
-        }
+        this.armsCtl.updateArmsPosition(dt);
+    }
+
+    updateRecoveryArms(dt: number) {
+        this.armsCtl.updateRecoveryArms(dt);
     }
 
     // update (dt) {}

@@ -30,7 +30,6 @@ export default class NewClass extends cc.Component {
      * 开始接收帧数据
      */
     run() {
-        
         pinusUtil.on("onFrameEvent", (data: FrameData) => {
             this.receivedFrameData(data);
         });

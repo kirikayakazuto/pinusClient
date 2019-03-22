@@ -80,13 +80,13 @@ export default class NewClass extends cc.Component {
             return ;
         }
         let data: any = {};
-        if(this.playerSeats.getSelfPlayer().armsStatus == ArmsStatus.OnHand) {
+        if(this.playerSeats.getSelfPlayer().getArmsStatus() == ArmsStatus.OnHand) {
             data.armsStatus = ArmsStatus.Runing;
             data.playerPos = this.playerSeats.getSelfPlayer().node.position;
             data.shootSpeed = this.playerSeats.getSelfPlayer().getArrowRotation();
             data.turnFace = this.playerSeats.getSelfPlayer().turnFace;
 
-        }else if(this.playerSeats.getSelfPlayer().armsStatus == ArmsStatus.onGround) {
+        }else if(this.playerSeats.getSelfPlayer().getArmsStatus() == ArmsStatus.onGround) {
             data.armsStatus = ArmsStatus.Recycling;
         }
         

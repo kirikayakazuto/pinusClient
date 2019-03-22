@@ -51,13 +51,5 @@ export default class NewClass extends cc.Component {
         });
     }
 
-    
-    /**
-     * 发送命令给服务器
-     */
-    sendEventToServer() {
-
-    }
-
     // update (dt) {}
 }

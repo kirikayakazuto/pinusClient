@@ -13,6 +13,27 @@
     [
       false,
       false,
+      true,
+      true,
+      true,
+      true
+    ],
+    [
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      true
+    ],
+    [
+      false,
+      true,
+      false,
+      false,
+      true,
+      null,
       true
     ],
     [
@@ -20,18 +41,24 @@
       true,
       false,
       true,
+      false,
+      null,
+      true
+    ],
+    [
+      false,
+      true,
+      true,
+      false,
+      false,
+      false,
       true
     ],
     [
       false,
       false,
       true,
-      false,
-      true
-    ],
-    [
-      false,
-      false,
+      true,
       true,
       true,
       false
@@ -45,8 +72,10 @@
   "group-list": [
     "default",
     "wall",
-    "player",
-    "arms",
+    "playerA",
+    "playerB",
+    "armsA",
+    "armsB",
     "ground"
   ],
   "simulator-orientation": false,
