@@ -1399,7 +1399,7 @@
     },
     "_enabled": true,
     "playerA": {
-      "__id__": 54
+      "__id__": 49
     },
     "playerB": {
       "__id__": 68
@@ -1420,7 +1420,7 @@
         "__id__": 56
       },
       {
-        "__id__": 49
+        "__id__": 51
       },
       {
         "__id__": 70
@@ -1486,7 +1486,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 54
+        "__id__": 49
       },
       {
         "__id__": 55
@@ -1910,10 +1910,64 @@
     "_enabled": true,
     "Arrow": {
       "__id__": 39
-    },
-    "armsSp": {
-      "__id__": 49
     }
+  },
+  {
+    "__type__": "1151fScGmNM9aEd7EainGfZ",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 37
+    },
+    "_enabled": true,
+    "SpriteCtl": {
+      "__id__": 48
+    },
+    "selfFlag": {
+      "__id__": 46
+    },
+    "armsCtl": {
+      "__id__": 50
+    },
+    "maxSpeed": {
+      "__type__": "cc.Vec2",
+      "x": 250,
+      "y": 450
+    },
+    "gravity": -1000,
+    "drag": 800,
+    "jumpSpeed": 450,
+    "speed": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    }
+  },
+  {
+    "__type__": "0cdf1kgMWpN+qwz9YLzztkA",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 51
+    },
+    "_enabled": true,
+    "armsOnHand": [
+      {
+        "__uuid__": "24511adf-b42a-4bc6-8900-9f3694abb20b"
+      }
+    ],
+    "armsOnGround": [
+      {
+        "__uuid__": "31cff427-f19e-4e11-af58-e9c739c76484"
+      },
+      {
+        "__uuid__": "2e56cede-e769-45f9-bca1-d8655f58b2b1"
+      },
+      {
+        "__uuid__": "3d2a3ebe-8f49-4458-9310-67cbfbe366f4"
+      }
+    ],
+    "selfGounp": "armsA"
   },
   {
     "__type__": "cc.Node",
@@ -1927,16 +1981,16 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 50
-      },
-      {
-        "__id__": 51
-      },
-      {
         "__id__": 52
       },
       {
         "__id__": 53
+      },
+      {
+        "__id__": 54
+      },
+      {
+        "__id__": 50
       }
     ],
     "_prefab": null,
@@ -1981,7 +2035,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 49
+      "__id__": 51
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -2007,7 +2061,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 49
+      "__id__": 51
     },
     "_enabled": true,
     "sprite_frames": [
@@ -2036,7 +2090,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 49
+      "__id__": 51
     },
     "_enabled": true,
     "tag": 0,
@@ -2049,63 +2103,6 @@
       "__type__": "cc.Size",
       "width": 30,
       "height": 30
-    }
-  },
-  {
-    "__type__": "0cdf1kgMWpN+qwz9YLzztkA",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 49
-    },
-    "_enabled": true,
-    "armsOnHand": [
-      {
-        "__uuid__": "24511adf-b42a-4bc6-8900-9f3694abb20b"
-      }
-    ],
-    "armsOnGround": [
-      {
-        "__uuid__": "31cff427-f19e-4e11-af58-e9c739c76484"
-      },
-      {
-        "__uuid__": "2e56cede-e769-45f9-bca1-d8655f58b2b1"
-      },
-      {
-        "__uuid__": "3d2a3ebe-8f49-4458-9310-67cbfbe366f4"
-      }
-    ],
-    "selfGounp": "armsA"
-  },
-  {
-    "__type__": "1151fScGmNM9aEd7EainGfZ",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 37
-    },
-    "_enabled": true,
-    "SpriteCtl": {
-      "__id__": 48
-    },
-    "selfFlag": {
-      "__id__": 46
-    },
-    "armsCtl": {
-      "__id__": 53
-    },
-    "maxSpeed": {
-      "__type__": "cc.Vec2",
-      "x": 300,
-      "y": 500
-    },
-    "gravity": -800,
-    "drag": 1000,
-    "jumpSpeed": 300,
-    "speed": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
     }
   },
   {
@@ -2568,8 +2565,7 @@
     "_enabled": true,
     "Arrow": {
       "__id__": 58
-    },
-    "armsSp": null
+    }
   },
   {
     "__type__": "1151fScGmNM9aEd7EainGfZ",
@@ -2590,12 +2586,12 @@
     },
     "maxSpeed": {
       "__type__": "cc.Vec2",
-      "x": 300,
-      "y": 500
+      "x": 250,
+      "y": 450
     },
-    "gravity": -800,
-    "drag": 1000,
-    "jumpSpeed": 300,
+    "gravity": -1000,
+    "drag": 800,
+    "jumpSpeed": 450,
     "speed": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -2760,8 +2756,8 @@
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 44,
-      "height": 68
+      "width": 30,
+      "height": 30
     }
   },
   {
@@ -3427,6 +3423,9 @@
     },
     "playerSeats": {
       "__id__": 35
+    },
+    "gameOverPanel": {
+      "__uuid__": "3118d770-4ada-4f9c-b3ce-e41b88f89c48"
     }
   },
   {

@@ -64,7 +64,7 @@ export default class NewClass extends cc.Component {
     setArmsStatus(status: ArmsStatus, whichOne?: number) {
         this.armsStatus = status;
         this.armsFrameAnim.no_play_anim();      // 停止播放动画
-        this.canCollision = status == ArmsStatus.Runing ? true : false;
+        this.canCollision = status == ArmsStatus.Runing;
         this.node.group = this.selfGounp;
         if(this.armsStatus == ArmsStatus.OnHand) {
             this.node.getComponent(cc.Sprite).spriteFrame = this.armsOnHand[whichOne];
@@ -129,6 +129,12 @@ export default class NewClass extends cc.Component {
         if(!this.canCollision) {
             return ;
         }
+        if(other.node.getComponent("PlayerCtl")) {
+            if(!other.node.getComponent("PlayerCtl").isSelf) {
+                other.node.getComponent("PlayerCtl").sendGameOverToServer(1);
+            }
+            return ;
+        }
         this.touchingNumber ++;
         let otherAabb = other["world"].aabb;
         let otherPreAabb = other["world"].preAabb.clone();  // 上一帧的包围盒
@@ -177,11 +183,17 @@ export default class NewClass extends cc.Component {
         if(!this.canCollision) {
             return ;
         }
+        if(other.node.getComponent("PlayerCtl")) {
+            return ;
+        }
 
     }
 
     onCollisionExit(other: cc.BoxCollider, self: cc.BoxCollider) {
         if(!this.canCollision) {
+            return ;
+        }
+        if(other.node.getComponent("PlayerCtl")) {
             return ;
         }
         this.touchingNumber --;         // 减去一次碰撞

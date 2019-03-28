@@ -2,6 +2,7 @@ import PlayerCtl from "./PlayerCtl"
 import GameInfo from "../GameInfo";
 import Action from "../common/Action";
 import { Cmd, ArmsStatus } from "../RES";
+import CtlButton from "./CtlButton"
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -16,10 +17,20 @@ export default class NewClass extends cc.Component {
     selfSeatId = -1;
     playerList: Array<PlayerCtl> = new Array<PlayerCtl>(2);
 
+    ctlButton:  CtlButton = null;
+
     // onLoad () {}
 
     start () {
+        
+    }
 
+    initButtonCtl(ctlButton: CtlButton) {
+        this.ctlButton = ctlButton;
+    }
+
+    getCtlButton() {
+        return this.ctlButton;
     }
 
     getSelfPlayer() {
@@ -38,8 +49,8 @@ export default class NewClass extends cc.Component {
             if(playerList[i].playerInfo.openId == GameInfo.userInfo.openId) {
                 this.playerList[i].showSelfFlag();
                 this.selfSeatId = i;
-                break;
             }
+            this.playerList[i].init(this);
         }
     }
     /**
@@ -51,13 +62,19 @@ export default class NewClass extends cc.Component {
                this.movePlayer(action.seatId, action.data);    
             break;
         
-            case Cmd.ArrowRitationSwitch:
+            case Cmd.ArrowRitationSwitch:           // 是否开启旋转
                 this.switchArrowRitation(action.seatId, action.data);
             break;
             
-            case Cmd.switchArmsStatus:
+            case Cmd.switchArmsStatus:              // 是否发出斧头
                 this.switchArmsStatus(action.seatId, action.data);
             break;
+
+            case Cmd.Jump:
+                this.playerJump(action.seatId, action.data);
+            break;
+
+
         }
 
     }
@@ -84,6 +101,10 @@ export default class NewClass extends cc.Component {
             this.playerList[seatId].recoveryArms();
         }
         
+    }
+
+    playerJump(seatId: number, data: any) {
+        this.playerList[seatId].setJumping();
     }
 
 

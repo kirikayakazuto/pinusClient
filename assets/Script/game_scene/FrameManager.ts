@@ -30,12 +30,17 @@ export default class NewClass extends cc.Component {
      * 开始接收帧数据
      */
     run() {
-        pinusUtil.on("onFrameEvent", (data: FrameData) => {
-            this.receivedFrameData(data);
-        });
+        pinusUtil.on("onFrameEvent", this.receivedFrameData.bind(this));
     }
+
     stop() {
-        
+        pinusUtil.off("onFrameEvent", this.receivedFrameData.bind(this));
+        this.isRunning = false;
+        this.receiveFrameData = [];
+        this.curFrameCount = 0;
+        this.isFastRunning = false;
+        this.runningFrameData = null;
+        this.restRunningSecond = 0;
     }
     /**
      * 收到命令

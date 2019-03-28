@@ -1,6 +1,7 @@
 import SpriteCtl from "./SpriteCtl"
 import { ArmsStatus } from "../RES";
 import ArmsCtl from "./ArmsCtl"
+import PlayerSeats from "./PlayerSeats"
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -24,13 +25,13 @@ export default class NewClass extends cc.Component {
     armsCtl: ArmsCtl = null;
 
     @property(Number)
-    maxSpeed = cc.v2(1000, 1000);
+    maxSpeed = cc.v2(800, 1);
     @property(Number)
     gravity = -1500;
     @property(Number)
     drag = 1000;
     @property(Number)
-    jumpSpeed = 500;
+    jumpSpeed = 1;
     @property(Number)
     speed = cc.v2(0, 0);          // 移动的速度
 
@@ -46,6 +47,8 @@ export default class NewClass extends cc.Component {
     prePosition = cc.v2();
     preStep = cc.v2();
 
+    playerSeats: PlayerSeats = null;
+
 
     
     // onLoad () {}
@@ -54,8 +57,8 @@ export default class NewClass extends cc.Component {
         this.armsCtl.init(this);
     }
 
-    init() {
-
+    init(playerSeats: PlayerSeats) {
+        this.playerSeats = playerSeats;
     }
     /**
      * -------------------------------------- 数据设置 -------------------------------
@@ -86,11 +89,26 @@ export default class NewClass extends cc.Component {
     }
     
     setJumping() {
-        if(this.jumping) {
+        /* if(this.jumping) {
             return ;
-        }
+        } */
         this.jumping = true;
         this.speed.y = this.jumpSpeed;
+    }
+
+    /**
+     * playerCtl 中调用 CtlButton 的方法, 不好
+     */
+    sendJumpDataToServer() {
+        this.playerSeats.getCtlButton().sendPlayerJump();
+    }
+
+    /**
+     * 游戏结束
+     * @param isWin -1表示失败, 1表示胜利
+     */
+    sendGameOverToServer(isWin: number) {
+        this.playerSeats.getCtlButton().sendGameOver(isWin);
     }
 
     /**
@@ -120,13 +138,20 @@ export default class NewClass extends cc.Component {
      * -----------------------------------------------------   碰撞回调   ---------------------------------------------------------
      */
     onCollisionEnter(other: cc.BoxCollider, self: cc.BoxCollider) {
-        this.touchingNumber ++;
-
-        if(other.node.groupIndex == 7) {
-            this.setJumping(); // 将信号发给服务器, 等待服务器的广播
-            return ;
+        if(this.isSelf) {
+            if(other.node.getComponent(ArmsCtl) && other.node.getComponent(ArmsCtl).armsStatus != ArmsStatus.onGround) {
+                if(other.node.getComponent(ArmsCtl).armsStatus == ArmsStatus.Runing) {
+                    this.sendGameOverToServer(-1);
+                }
+                return ;
+            }
         }
         
+        this.touchingNumber ++;
+        if(other.node.groupIndex == 7 && other.node.getComponent(ArmsCtl).armsStatus == ArmsStatus.onGround) {
+            this.sendJumpDataToServer(); // 将信号发给服务器, 等待服务器的广播
+            return ;
+        }
         let otherAabb = other["world"].aabb;
         let otherPreAabb = other["world"].preAabb.clone();  // 上一帧的包围盒
 
@@ -175,11 +200,15 @@ export default class NewClass extends cc.Component {
     }
 
     onCollisionStay(other: cc.BoxCollider, self: cc.BoxCollider) {
-
+        
     }
 
     onCollisionExit(other: cc.BoxCollider, self: cc.BoxCollider) {
         this.touchingNumber --;         // 减去一次碰撞
+
+        if(other.node.getComponent(ArmsCtl) && other.node.getComponent(ArmsCtl).armsStatus != ArmsStatus.onGround) { 
+            return ;
+        }
 
         if (this.touchingNumber === 0) {
             

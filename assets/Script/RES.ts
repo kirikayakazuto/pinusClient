@@ -21,7 +21,8 @@ export enum Cmd {
     Move = 1,
     ArrowRitationSwitch = 2,
     switchArmsStatus = 3,
-
+    Jump = 4,
+    GameOver = 5,
 }
 
 export enum ArmsStatus {

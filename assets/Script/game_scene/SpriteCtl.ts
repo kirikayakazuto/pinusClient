@@ -6,13 +6,11 @@ export default class NewClass extends cc.Component {
 
     @property(cc.Node)
     Arrow: cc.Node = null;
-    @property(cc.Node)
-    armsSp: cc.Node = null;
     playerSpArray: Array<frame_anim> = [];
     // LIFE-CYCLE CALLBACKS:
 
     arrowRotationDir = 1;       // 箭头旋转方向
-    arrowRotationSpeed = 50;       // 箭头旋转的速度
+    arrowRotationSpeed = 25;       // 箭头旋转的速度
     arrowRotationFlag = false;      // 是否开始旋转
 
 
@@ -37,12 +35,6 @@ export default class NewClass extends cc.Component {
         this.arrowRotationFlag = isStop;
     }
 
-    hideArmSp() {
-        this.armsSp.active = false;
-    }
-    showArmSp() {
-        this.armsSp.active = true;
-    }
     /**
      * 获取箭头旋转的角度
      */

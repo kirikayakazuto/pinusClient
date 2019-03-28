@@ -14,6 +14,9 @@ export default class NewClass extends cc.Component {
     CtlButton: CtlButton = null;
     @property(playerSeats)
     playerSeats: playerSeats = null;
+
+    @property(cc.Prefab)
+    gameOverPanel: cc.Prefab = null;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -40,15 +43,35 @@ export default class NewClass extends cc.Component {
      * 添加监听事件
      */
     addServerListen() {
-        pinusUtil.on("onWaitGameStart", (data: {waitTime: number, playerInfoList: [{seatId: number, playerInfo: UserInfo}]}) => {
+        pinusUtil.once("onWaitGameStart", (data: {waitTime: number, playerInfoList: [{seatId: number, playerInfo: UserInfo}]}) => {
             console.log("onWaitGameStart", data);   
             this.playerSeats.initPlayerList(data.playerInfoList);
         });
 
-        pinusUtil.on("onGameStart", (data: {waitTime: number}) => {
+        pinusUtil.once("onGameStart", (data: {waitTime: number}) => {
             console.log("onGameStart", data);
             this.node.getComponent("FrameManager").run();
         });
+        /**
+         * {openId: player.openId, seatId: player.seatId, isWin: player.isWin}
+         */
+        pinusUtil.once("onGameOver", (data: Array<any>) => {
+            // 取消事件的监听
+            this.node.getComponent("FrameManager").stop();
+
+            let selfSeatId = this.playerSeats.selfSeatId;
+            let node = cc.instantiate(this.gameOverPanel);
+            let str = "";
+            if(data[selfSeatId].isWin == 1) {
+                str = "你赢了!";
+            }else if(data[selfSeatId].isWin == -1) {
+                str = "你输了!";
+            }
+            node.getComponent("gameOverPanelCtl").setTips(str);
+            node.parent = this.node;
+        });
+
+        
     }
 
     // update (dt) {}

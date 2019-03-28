@@ -30,7 +30,7 @@ export default class NewClass extends cc.Component {
     }
 
     start () {
-
+        this.playerSeats.initButtonCtl(this);
     }
 
     /**
@@ -72,6 +72,24 @@ export default class NewClass extends cc.Component {
         this.scheduleOnce(() => {
             this.arrowButtonFlag = false;
         }, 1);
+    }
+    /**
+     * 玩家跳跃
+     */
+    sendPlayerJump() {
+        this.action.setCmdAndData(Cmd.Jump, {})
+        this.sendFrameData(this.action);
+    }
+    /**
+     * 游戏结束
+     */
+    sendGameOver(isWin: number) {
+        let route = "chat.chatHandler.gameOver";
+        pinusUtil.request(route, {isWin: isWin}, (data) => {
+            if(data.code != RES.OK) {
+                
+            }
+        });
     }
 
     switchArmsFlag = false;

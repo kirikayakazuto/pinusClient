@@ -29,4 +29,12 @@ export default class pinusUtil {
         pinus.on(event, callBack);
     }
 
+    static once(event: string, callBack: Function) {
+        pinus.once(event, callBack);
+    }
+
+    static off(event: string, callBack: Function) {
+        pinus.off(event, callBack);
+    }
+
 }
