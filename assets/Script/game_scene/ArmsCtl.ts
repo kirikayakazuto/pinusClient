@@ -43,7 +43,7 @@ export default class NewClass extends cc.Component {
     posCha = -25;
 
 
-    recoverySpeed = 800;
+    recoverySpeed = 500;
     thowSpeed = 500;
 
     onLoad () {

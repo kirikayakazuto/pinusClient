@@ -73,11 +73,17 @@ export default class NewClass extends cc.Component {
             this.arrowButtonFlag = false;
         }, 1);
     }
+    jumpButtonClick() {
+        this.sendPlayerJump(true);
+    }
     /**
      * 玩家跳跃
      */
-    sendPlayerJump() {
-        this.action.setCmdAndData(Cmd.Jump, {})
+    sendPlayerJump(isPlayer: boolean) {
+        if(this.playerSeats.getSelfPlayer().jumping) {
+            return ;
+        }
+        this.action.setCmdAndData(Cmd.Jump, {isPlayer: isPlayer});
         this.sendFrameData(this.action);
     }
     /**

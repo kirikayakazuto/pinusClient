@@ -1,5 +1,6 @@
 import pinusUtil from "../common/pinusUtil";
 import RES from "../RES";
+import HomeScene from "./HomeScene"
 
 const {ccclass, property} = cc._decorator;
 
@@ -10,6 +11,11 @@ export default class NewClass extends cc.Component {
     onlineMasterPanel: cc.Prefab = null;
 
 
+    homeScene: HomeScene = null;
+
+    init(homeScene: HomeScene) {
+        this.homeScene = homeScene;
+    }
     // onLoad () {}
 
     start () {

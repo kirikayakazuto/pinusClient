@@ -10,7 +10,6 @@ export default class NewClass extends cc.Component {
     @property(cc.Label)
     nickName: cc.Label = null;
 
-
     @property(cc.Label)
     playerLevel: cc.Label = null;
     @property(cc.Label)
@@ -27,9 +26,6 @@ export default class NewClass extends cc.Component {
      * 同步用户信息
      */
     syncPlayerInfo() {
-        if(GameInfo.userInfo.openId == "") {
-            return ;
-        }
          cc.loader.load({url: GameInfo.userInfo.avatarUrl, type: 'jpg'}, (err, texture) => {
             if(err) {
                 console.log(err);
@@ -40,10 +36,13 @@ export default class NewClass extends cc.Component {
         });
 
         this.nickName.string = GameInfo.userInfo.nickName;
-        this.playerChip.string = GameInfo.userInfo.chip + "";
-
+        this.playerChip.string = "金币:" + GameInfo.userInfo.chip;
         this.playerLevel.string = GameInfo.userInfo.exp + "";
+    }
 
+    syncPlayerGameInfo() {
+        this.playerChip.string = "金币:" + GameInfo.userInfo.chip;
+        this.playerLevel.string =  "" + GameInfo.userInfo.exp;
     }
  
     // update (dt) {}

@@ -1,5 +1,4 @@
 import pinusUtil from "../common/pinusUtil";
-import RES from "../RES";
 import CtlButton from "./CtlButton"
 import playerSeats from "./PlayerSeats"
 import { UserInfo } from "../GameInterface";
@@ -17,6 +16,8 @@ export default class NewClass extends cc.Component {
 
     @property(cc.Prefab)
     gameOverPanel: cc.Prefab = null;
+
+
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -44,7 +45,7 @@ export default class NewClass extends cc.Component {
      */
     addServerListen() {
         pinusUtil.once("onWaitGameStart", (data: {waitTime: number, playerInfoList: [{seatId: number, playerInfo: UserInfo}]}) => {
-            console.log("onWaitGameStart", data);   
+            console.log("onWaitGameStart", data);
             this.playerSeats.initPlayerList(data.playerInfoList);
         });
 

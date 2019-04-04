@@ -3,6 +3,7 @@ import Action from "../common/Action";
 import FrameData from "../common/FrameData";
 import playerSeats from "./PlayerSeats"
 import { Cmd } from "../RES";
+import acc from "../utils/acc";
 
 const {ccclass, property} = cc._decorator;
 
@@ -58,11 +59,11 @@ export default class NewClass extends cc.Component {
             if(scale > 10) scale = 10;
             this.isFastRunning = scale > 1;
 
-            let ms = dt * scale;                // 步长, 帧间隔
+            let ms = acc.accMul(dt, scale);                // 步长, 帧间隔
 
             if(this.runningFrameData == null) {     // 当前没有帧在执行
                 this.runningFrameData = this.receiveFrameData[0];
-                this.restRunningSecond = this.stepInterval / 1000;
+                this.restRunningSecond = acc.accDiv(this.stepInterval, 1000);
             }
             if(ms > this.restRunningSecond) {
                 ms = this.restRunningSecond;
@@ -76,7 +77,7 @@ export default class NewClass extends cc.Component {
 
             this.playerSeats.frameUpdate(ms);
             
-            this.restRunningSecond -= ms;
+            this.restRunningSecond = acc.accSub(this.restRunningSecond, ms);
             if(this.restRunningSecond <= 0) {
                 this.isRunning = false;
                 this.runningFrameData = null;

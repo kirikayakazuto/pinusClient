@@ -87,11 +87,13 @@ export default class NewClass extends cc.Component {
             this.node.scaleX = this.turnFace;
         }
     }
-    
-    setJumping() {
-        /* if(this.jumping) {
+    /**
+     * 
+     */
+    setJumping(isPlayer: boolean) {
+        if(this.jumping) {
             return ;
-        } */
+        }
         this.jumping = true;
         this.speed.y = this.jumpSpeed;
     }
@@ -100,7 +102,7 @@ export default class NewClass extends cc.Component {
      * playerCtl 中调用 CtlButton 的方法, 不好
      */
     sendJumpDataToServer() {
-        this.playerSeats.getCtlButton().sendPlayerJump();
+        this.playerSeats.getCtlButton().sendPlayerJump(false);
     }
 
     /**
@@ -148,7 +150,8 @@ export default class NewClass extends cc.Component {
         }
         
         this.touchingNumber ++;
-        if(other.node.groupIndex == 7 && other.node.getComponent(ArmsCtl).armsStatus == ArmsStatus.onGround) {
+        if(this.isSelf && other.node.groupIndex == 7 && other.node.getComponent(ArmsCtl).armsStatus == ArmsStatus.onGround) {
+            this.jumping = false;
             this.sendJumpDataToServer(); // 将信号发给服务器, 等待服务器的广播
             return ;
         }
