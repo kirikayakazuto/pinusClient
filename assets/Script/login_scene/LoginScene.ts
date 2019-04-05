@@ -1,5 +1,6 @@
 import GameInfo from "../GameInfo";
 import pinusUtil from "../common/pinusUtil";
+import GSceneUtil from "../common/GSceneUtil";
 
 const {ccclass, property} = cc._decorator;
 
@@ -13,7 +14,7 @@ export default class NewClass extends cc.Component {
 
     onLoad () { 
         
-    } 
+    }
 
     start () {
 
@@ -108,8 +109,7 @@ export default class NewClass extends cc.Component {
         let route = "connector.entryHandler.enter";
         pinusUtil.init("127.0.0.1", 3050, true, route, {openId: GameInfo.userInfo.openId}, (data: any) => {
             if(data && data.code == 1) {
-                console.log("登录成功!");
-                cc.director.loadScene("home_scene");
+                GSceneUtil.loadSceneWithProgress("home_scene")
             }
         });        
     }
