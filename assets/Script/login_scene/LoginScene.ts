@@ -86,7 +86,7 @@ export default class NewClass extends cc.Component {
                 avatarUrl: "https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaELED8YcLTuBpUC279icN0vO8UWSUN7VrYyhPFBzibCWhwOicB7ym5NJaoLZq64KYTyRsF0CVT1zTJVoQ/132",
                 gender: 1,
                 chip: 1000,
-                exp: 0,
+                exp: 200,
                 city: "Jiujiang",
                 country: "China",
                 province: "Jiangxi"
@@ -98,7 +98,7 @@ export default class NewClass extends cc.Component {
                 avatarUrl: "https://wx.qlogo.cn/mmopen/vi_32/PiajxSqBRaELED8YcLTuBpUC279icN0vO8UWSUN7VrYyhPFBzibCWhwOicB7ym5NJaoLZq64KYTyRsF0CVT1zTJVoQ/132",
                 gender: 1,
                 chip: 1000,
-                exp: 10,
+                exp: 100,
                 city: "Jiujiang",
                 country: "China",
                 province: "Jiangxi"

@@ -1,5 +1,5 @@
-import UserInfoCtl from "./UserInfoCtl"
-import HomeScene from "./HomeScene"
+import HomeScene from "./HomeScene";
+import UserInfoCtl from "./UserInfoCtl";
 const {ccclass, property} = cc._decorator;
 
 @ccclass

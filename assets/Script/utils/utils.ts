@@ -28,4 +28,12 @@ export default class utils {
         }
         return num;
     }
+
+    static getStrByNumber(index: number) {
+        if(index < 0 || index >= 10) {
+            return null;
+        }
+        let str = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十'];
+        return str[index];
+    }
 }
